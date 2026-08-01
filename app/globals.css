@@ -9,6 +9,7 @@
   --arabic-script: "Aref Ruqaa", "Amiri", "Noto Naskh Arabic", Georgia, serif;
   --registry-number-serif: "BauerBodoniPro-Roman", "Libre Baskerville", Georgia,
     serif;
+  --page-bg: #f6f2ec;
   --cream: #fbf3e9;
   --ink: #fcf6ee;
   --ink-soft: rgba(252, 246, 238, 0.82);
@@ -44,17 +45,18 @@ html[lang="ar"] .font-script {
 }
 
 /* iOS Safari tints its toolbars and the rubber-band overscroll areas from the
-   root background, so the document stays white. What you actually see inside
-   the viewport is the fixed backdrop, which keeps the slide chrome colour. */
+   root background, so the document stays on the soft off-white page colour.
+   What you actually see inside the viewport is the fixed backdrop, which keeps
+   the slide chrome colour once the first slide has decoded. */
 html {
   scroll-behavior: smooth;
-  background: #ffffff;
+  background: var(--page-bg);
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
-  background: #ffffff;
+  background: var(--page-bg);
   color: var(--ink);
   font-family: var(--serif);
   -webkit-font-smoothing: antialiased;

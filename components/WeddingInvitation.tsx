@@ -373,6 +373,7 @@ export default function WeddingInvitation({
   const [language, setLanguage] = useState<Language>("en");
   const [appReady, setAppReady] = useState(false);
   const [slides, setSlides] = useState(defaultSlides);
+  const [slidesResolved, setSlidesResolved] = useState(false);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [cueHidden, setCueHidden] = useState(false);
@@ -400,6 +401,12 @@ export default function WeddingInvitation({
     slideChromeColors[activeSlide % slideChromeColors.length] ??
     slideChromeColors[0] ??
     "#b7410e";
+  // The slide chrome is a dark rust that the photos blend into, but on a cold
+  // start there is no photo to blend with yet, so it reads as a red flash. Until
+  // the first slide has decoded the backdrop stays on the off-white page colour.
+  // If discovery finishes without finding any slide the chrome comes back, since
+  // the cream copy is only legible over the dark backdrop.
+  const awaitingFirstSlide = slides.length === 0 && !slidesResolved;
   const normalizedInvitationCode = invitationCode?.trim();
   const countdownUnits = [
     { key: "days", label: copy.countdown.days, value: countdown?.days },
@@ -450,6 +457,7 @@ export default function WeddingInvitation({
     const controller = new AbortController();
 
     setSlides([]);
+    setSlidesResolved(false);
     setActiveSlide(0);
     discoverNumberedSlides(controller.signal, (src) => {
       if (controller.signal.aborted) return;
@@ -459,6 +467,7 @@ export default function WeddingInvitation({
     }).then((nextSlides) => {
       if (controller.signal.aborted) return;
       setActiveSlide((index) => (index < nextSlides.length ? index : 0));
+      setSlidesResolved(true);
     });
 
     return () => controller.abort();
@@ -497,9 +506,10 @@ export default function WeddingInvitation({
       document.querySelector<HTMLMetaElement>('meta[name="theme-color"]') ??
       document.head.appendChild(document.createElement("meta"));
 
-    // Browser chrome stays white; only the in-page backdrop follows the slide.
+    // Browser chrome stays on the page colour; only the in-page backdrop
+    // follows the slide.
     themeColorMeta.name = "theme-color";
-    themeColorMeta.content = "#ffffff";
+    themeColorMeta.content = "#f6f2ec";
     document.documentElement.style.setProperty(
       "--slide-chrome-color",
       activeChromeColor,
@@ -832,8 +842,12 @@ export default function WeddingInvitation({
   return (
     <>
       <div
-        className="bg-fallback fixed inset-0 z-0"
-        style={{ backgroundColor: activeChromeColor }}
+        className={`fixed inset-0 z-0 ${awaitingFirstSlide ? "" : "bg-fallback"}`}
+        style={{
+          backgroundColor: awaitingFirstSlide
+            ? "var(--page-bg)"
+            : activeChromeColor,
+        }}
         aria-hidden="true"
       >
         {slides.map((slide, index) => (
@@ -864,14 +878,20 @@ export default function WeddingInvitation({
           </div>
         ))}
       </div>
-      <div
-        className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(180deg,rgba(44,28,18,0.30)_0%,rgba(48,30,20,0.22)_40%,rgba(40,24,16,0.34)_100%)] before:absolute before:inset-0 before:bg-[radial-gradient(130%_100%_at_50%_0%,rgba(58,38,24,0.12),transparent_45%)] after:absolute after:inset-0 after:bg-[radial-gradient(120%_120%_at_50%_120%,rgba(40,24,14,0.38),transparent_55%)]"
-        aria-hidden="true"
-      />
-      <div
-        className="pointer-events-none fixed inset-0 z-[1] shadow-[inset_0_0_180px_25px_rgba(30,18,10,0.32)]"
-        aria-hidden="true"
-      />
+      {/* These only exist to sink the photos back behind the copy, so they stay
+          off while the off-white pre-slide backdrop is showing. */}
+      {!awaitingFirstSlide && (
+        <>
+          <div
+            className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(180deg,rgba(44,28,18,0.30)_0%,rgba(48,30,20,0.22)_40%,rgba(40,24,16,0.34)_100%)] before:absolute before:inset-0 before:bg-[radial-gradient(130%_100%_at_50%_0%,rgba(58,38,24,0.12),transparent_45%)] after:absolute after:inset-0 after:bg-[radial-gradient(120%_120%_at_50%_120%,rgba(40,24,14,0.38),transparent_55%)]"
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none fixed inset-0 z-[1] shadow-[inset_0_0_180px_25px_rgba(30,18,10,0.32)]"
+            aria-hidden="true"
+          />
+        </>
+      )}
 
       <main className="relative z-[2]">
         <section
