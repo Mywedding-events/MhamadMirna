@@ -2,8 +2,11 @@
 
 :root {
   --script: "CitadelScriptPro", "Great Vibes", cursive;
-  --serif: "BauerBodoniPro-Roman", "Cormorant Garamond", Georgia, serif;
+  --latin-serif: "BauerBodoniPro-Roman", "Cormorant Garamond", Georgia, serif;
+  --serif: var(--latin-serif);
   --body-serif: "Gulzar", "Gulzar-Regular", "Cormorant Garamond", Georgia, serif;
+  --arabic-serif: "Amiri", "Noto Naskh Arabic", "Segoe UI", Georgia, serif;
+  --arabic-script: "Aref Ruqaa", "Amiri", "Noto Naskh Arabic", Georgia, serif;
   --registry-number-serif: "BauerBodoniPro-Roman", "Libre Baskerville", Georgia,
     serif;
   --cream: #fbf3e9;
@@ -14,6 +17,26 @@
   --slide-chrome-color: #b7410e;
   --shadow-text:
     0 1px 18px rgba(30, 18, 10, 0.55), 0 1px 3px rgba(30, 18, 10, 0.4);
+}
+
+/* Arabic swaps the whole type system: the Latin display/serif faces have no
+   Arabic glyphs, so every font token points at an Arabic face instead. */
+html[lang="ar"] {
+  --script: var(--arabic-script);
+  --serif: var(--arabic-serif);
+  --body-serif: var(--arabic-serif);
+  --registry-number-serif: var(--arabic-serif);
+}
+
+/* Tracking breaks the cursive joins between Arabic letters. */
+html[lang="ar"] body,
+html[lang="ar"] body * {
+  letter-spacing: normal;
+}
+
+/* Arabic ascenders and diacritics need more room than the Latin display leading. */
+html[lang="ar"] .font-script {
+  line-height: 1.5;
 }
 
 * {
@@ -52,6 +75,16 @@ a {
 
 .font-body-wedding {
   font-family: var(--body-serif);
+}
+
+.font-arabic-wedding {
+  font-family: var(--arabic-serif);
+}
+
+/* Digits stay on the Latin serif in both languages so the ticking countdown
+   keeps its tabular figures and does not jitter. */
+.font-numerals-wedding {
+  font-family: var(--latin-serif);
 }
 
 .font-registry-numbers {

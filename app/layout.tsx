@@ -21,33 +21,33 @@ const previewImage = {
   url: coverImageUrl,
   width: 1200,
   height: 630,
-  alt: "Ramy and Mary wedding invitation",
+  alt: "Karim and Mirna wedding invitation",
   type: "image/jpeg",
 };
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
-  title: "Ramy & Mary - Wedding Invitation",
+  title: "Karim & Mirna - Wedding Invitation",
   description:
-    "Wedding invitation for Ramy and Mary on Sunday, August 23, 2026.",
+    "Wedding invitation for Karim and Mirna on Sunday, September 20, 2026.",
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
-    title: "Ramy & Mary - Wedding Invitation",
+    title: "Karim & Mirna - Wedding Invitation",
     description:
-      "Wedding invitation for Ramy and Mary on Sunday, August 23, 2026.",
+      "Wedding invitation for Karim and Mirna on Sunday, September 20, 2026.",
     url: siteUrl.toString(),
-    siteName: "Ramy & Mary Wedding Invitation",
+    siteName: "Karim & Mirna Wedding Invitation",
     type: "website",
     locale: "en_US",
     images: [previewImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ramy & Mary - Wedding Invitation",
+    title: "Karim & Mirna - Wedding Invitation",
     description:
-      "Wedding invitation for Ramy and Mary on Sunday, August 23, 2026.",
+      "Wedding invitation for Karim and Mirna on Sunday, September 20, 2026.",
     images: [previewImage],
   },
 };
@@ -63,7 +63,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" dir="ltr">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
@@ -72,7 +72,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
         <link
-          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gulzar&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:wght@400;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Gulzar&family=Amiri:wght@400;700&family=Aref+Ruqaa:wght@400;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Libre+Baskerville:wght@400;700&display=swap"
           rel="stylesheet"
         />
       </head>
