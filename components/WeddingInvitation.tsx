@@ -492,7 +492,7 @@ export default function WeddingInvitation({
 
     const slideTimer = window.setInterval(() => {
       setActiveSlide((index) => (index + 1) % slides.length);
-    }, 3000);
+    }, 2200);
 
     return () => {
       window.clearInterval(slideTimer);
@@ -853,7 +853,7 @@ export default function WeddingInvitation({
         {slides.map((slide, index) => (
           <div
             key={slide}
-            className={`absolute inset-0 transition-opacity duration-1600 ease-in-out ${
+            className={`absolute inset-0 transition-opacity duration-1100 ease-in-out ${
               activeSlide === index ? "opacity-100" : "opacity-0"
             }`}
           >
