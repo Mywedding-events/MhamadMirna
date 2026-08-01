@@ -43,14 +43,18 @@ html[lang="ar"] .font-script {
   box-sizing: border-box;
 }
 
+/* iOS Safari tints its toolbars and the rubber-band overscroll areas from the
+   root background, so the document stays white. What you actually see inside
+   the viewport is the fixed backdrop, which keeps the slide chrome colour. */
 html {
   scroll-behavior: smooth;
+  background: #ffffff;
 }
 
 body {
   margin: 0;
   overflow-x: hidden;
-  background: var(--slide-chrome-color);
+  background: #ffffff;
   color: var(--ink);
   font-family: var(--serif);
   -webkit-font-smoothing: antialiased;

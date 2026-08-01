@@ -497,14 +497,13 @@ export default function WeddingInvitation({
       document.querySelector<HTMLMetaElement>('meta[name="theme-color"]') ??
       document.head.appendChild(document.createElement("meta"));
 
+    // Browser chrome stays white; only the in-page backdrop follows the slide.
     themeColorMeta.name = "theme-color";
-    themeColorMeta.content = activeChromeColor;
+    themeColorMeta.content = "#ffffff";
     document.documentElement.style.setProperty(
       "--slide-chrome-color",
       activeChromeColor,
     );
-    document.documentElement.style.backgroundColor = activeChromeColor;
-    document.body.style.backgroundColor = activeChromeColor;
   }, [activeChromeColor, appReady]);
 
   useEffect(() => {
