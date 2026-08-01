@@ -864,7 +864,7 @@ export default function WeddingInvitation({
               priority={index === 0}
               sizes="100vw"
               unoptimized
-              className="scale-105 object-cover object-[center_30%] brightness-[0.72] saturate-[0.85] blur-[3px] md:scale-110 md:brightness-[0.58] md:blur-[10px]"
+              className="scale-105 object-cover object-[center_30%] brightness-[0.72] saturate-[0.85] md:scale-110 md:brightness-[0.58] md:blur-[10px]"
             />
             <Image
               src={slide}
