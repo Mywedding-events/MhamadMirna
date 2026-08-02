@@ -1071,6 +1071,15 @@ export default function WeddingInvitation({
             <p className="reveal text-shadow-wedding mt-1.5 font-serif-wedding text-[15px] tracking-[0.04em] text-[var(--ink-soft)]">
               {copy.rsvpDeadline}
             </p>
+            {/* Italic is skipped in Arabic, where the Naskh face has no italic
+                cut and the browser would slant it synthetically. */}
+            <p
+              className={`reveal text-shadow-wedding mx-auto mt-2.5 max-w-[340px] font-serif-wedding text-[14px] leading-[1.6] tracking-[0.03em] text-[var(--ink-soft)] ${
+                language === "ar" ? "" : "italic"
+              }`}
+            >
+              {copy.adultsOnlyNote}
+            </p>
             <div className="wedding-rule reveal" />
             <p className="reveal text-shadow-wedding my-1.5 mb-[18px] font-serif-wedding text-[15px] tracking-[0.04em] text-[var(--ink-soft)]">
               {copy.guestCountLabel}{" "}

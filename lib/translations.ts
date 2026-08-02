@@ -38,6 +38,7 @@ export type Copy = {
   registryPhoneLabel: string;
   rsvpTitle: string;
   rsvpDeadline: string;
+  adultsOnlyNote: string;
   guestCountLabel: string;
   loadingInvitation: string;
   noInvitationCode: string;
@@ -98,6 +99,8 @@ export const translations: Record<Language, Copy> = {
     registryPhoneLabel: "Phone number:",
     rsvpTitle: "We would be honored by your presence!",
     rsvpDeadline: "Appreciate your kind reply before 6 September 2026.",
+    adultsOnlyNote:
+      "Children in the care of those you love, and the evening for the grown-ups.",
     guestCountLabel: "Number of guests:",
     loadingInvitation: "Loading your invitation...",
     noInvitationCode: "No invitation code was provided.",
@@ -155,6 +158,7 @@ export const translations: Record<Language, Copy> = {
     registryPhoneLabel: "رقم الهاتف:",
     rsvpTitle: "يشرّفنا حضوركم!",
     rsvpDeadline: "نرجو تأكيد حضوركم قبل 6 أيلول 2026.",
+    adultsOnlyNote: "الأطفال في رعاية من تحبون، والأمسية للكبار.",
     guestCountLabel: "عدد المدعوين:",
     loadingInvitation: "جارٍ تحميل دعوتكم...",
     noInvitationCode: "لم يتم إدخال رمز الدعوة.",
