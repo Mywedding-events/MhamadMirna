@@ -16,8 +16,15 @@
   --gold: oklch(0.82 0.075 78);
   --gold-line: oklch(0.86 0.06 80 / 0.55);
   --slide-chrome-color: #b7410e;
+  /* No page-wide dimming layer sits behind the copy any more, so each glyph
+     carries its own contrast: a tight dark rim keeps the cream text crisp on
+     bright photo areas, and the wider soft glows anchor it over busy detail —
+     legibility without darkening the background itself. */
   --shadow-text:
-    0 1px 18px rgba(30, 18, 10, 0.55), 0 1px 3px rgba(30, 18, 10, 0.4);
+    0 0 1px rgba(18, 10, 4, 0.95),
+    0 1px 2px rgba(18, 10, 4, 0.9),
+    0 2px 8px rgba(18, 10, 4, 0.75),
+    0 3px 20px rgba(18, 10, 4, 0.6);
 }
 
 /* Arabic swaps the whole type system: the Latin display/serif faces have no

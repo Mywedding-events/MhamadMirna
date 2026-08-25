@@ -788,20 +788,9 @@ export default function WeddingInvitation({
           </div>
         ))}
       </div>
-      {/* These only exist to sink the photos back behind the copy, so they stay
-          off while the off-white pre-slide backdrop is showing. */}
-      {!awaitingFirstSlide && (
-        <>
-          <div
-            className="pointer-events-none fixed inset-0 z-[1] bg-[linear-gradient(180deg,rgba(44,28,18,0.30)_0%,rgba(48,30,20,0.22)_40%,rgba(40,24,16,0.34)_100%)] before:absolute before:inset-0 before:bg-[radial-gradient(130%_100%_at_50%_0%,rgba(58,38,24,0.12),transparent_45%)] after:absolute after:inset-0 after:bg-[radial-gradient(120%_120%_at_50%_120%,rgba(40,24,14,0.38),transparent_55%)]"
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none fixed inset-0 z-[1] shadow-[inset_0_0_180px_25px_rgba(30,18,10,0.32)]"
-            aria-hidden="true"
-          />
-        </>
-      )}
+      {/* The page-wide dimming veil was removed so the photos read at their own
+          brightness; the cream copy now stays legible through its per-glyph
+          text-shadow (see --shadow-text) rather than a screen over the art. */}
 
       <main className="relative z-[2]">
         <section
@@ -810,6 +799,9 @@ export default function WeddingInvitation({
           data-screen-label="01 Welcome"
         >
           <div className="w-full max-w-[560px]">
+            <p className="reveal text-shadow-wedding font-arabic-wedding mx-auto mb-[clamp(18px,6vw,30px)] max-w-[500px] text-[clamp(19px,5.4vw,28px)] leading-[1.8] text-[var(--gold)]">
+              {copy.basmala}
+            </p>
             <p className="reveal text-shadow-wedding font-arabic-wedding mx-auto mb-[clamp(20px,7vw,34px)] max-w-[500px] text-[clamp(15px,4.4vw,20px)] leading-[1.9] text-[var(--ink-soft)]">
               {copy.verse}
             </p>
