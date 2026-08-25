@@ -3,6 +3,7 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import EnvelopeOverlay from "./EnvelopeOverlay";
 import { supportedImageExtensions } from "../lib/imageFormats";
 import { copy, registryPhoneNumber } from "../lib/translations";
 
@@ -749,6 +750,7 @@ export default function WeddingInvitation({
 
   return (
     <>
+      <EnvelopeOverlay />
       <div
         className={`fixed inset-0 z-0 ${awaitingFirstSlide ? "" : "bg-fallback"}`}
         style={{

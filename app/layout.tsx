@@ -75,7 +75,7 @@ export default function RootLayout({
       </head>
       <body style={{ visibility: "hidden" }}>
         <noscript>
-          <style>{`body{visibility:visible!important}`}</style>
+          <style>{`body{visibility:visible!important}.envelope-overlay{display:none!important}`}</style>
         </noscript>
         {children}
       </body>

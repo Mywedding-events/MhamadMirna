@@ -43,6 +43,9 @@ export type Copy = {
   invitationLoadFailed: string;
   rsvpFailed: string;
   closingTitle: string;
+  envelopeHint: string;
+  envelopeAria: string;
+  envelopeLetterLabel: string;
 };
 
 // The invitation is now Arabic-only; there is a single copy deck.
@@ -92,4 +95,7 @@ export const copy: Copy = {
   invitationLoadFailed: "تعذّر تحميل هذه الدعوة.",
   rsvpFailed: "تعذّر إرسال ردّكم.",
   closingTitle: "لا نطيق صبرًا للاحتفال معكم.",
+  envelopeHint: "اضغطوا لفتح الدعوة",
+  envelopeAria: "افتحوا دعوة الزفاف",
+  envelopeLetterLabel: "دعوة زفاف",
 };
