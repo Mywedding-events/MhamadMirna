@@ -656,7 +656,7 @@ export default function WeddingInvitation({
           priority
           sizes="100vw"
           unoptimized
-          className="scale-105 object-cover object-[center_30%] brightness-[0.95] saturate-[1] md:scale-110 md:brightness-[0.85] md:blur-[10px]"
+          className="scale-105 object-cover object-[center_30%] saturate-[1] md:scale-110 md:blur-[10px]"
         />
         <Image
           src={backgroundImage}
@@ -665,13 +665,12 @@ export default function WeddingInvitation({
           priority
           sizes="100vw"
           unoptimized
-          className="hidden object-contain object-center brightness-[0.95] saturate-[1] md:block"
+          className="hidden object-contain object-center saturate-[1] md:block"
         />
       </div>
-      {/* The page-wide dimming veil is gone and the photos now render at
-          near-natural brightness (only a slight trim so highlights don't blow
-          out); the cream copy stays legible through its per-glyph text-shadow
-          (see --shadow-text) rather than any darkening of the art. */}
+      {/* No dimming veil and no brightness trim: the photo renders at its
+          natural brightness. The copy sits on top in warm-brown ink
+          (--ink / #4a3826) with no text-shadow block behind the glyphs. */}
 
       <main className="relative z-[2]">
         <section
