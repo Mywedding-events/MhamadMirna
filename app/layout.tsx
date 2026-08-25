@@ -62,6 +62,15 @@ export default function RootLayout({
   return (
     <html lang="ar" dir="rtl">
       <head>
+        {/* Fetch the invitation photo up front so it is already loaded behind
+            the sealed envelope — the moment a guest breaks the seal the
+            background is there, with no pop-in. */}
+        <link
+          rel="preload"
+          as="image"
+          href="/uploads/1.jpeg"
+          fetchPriority="high"
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
