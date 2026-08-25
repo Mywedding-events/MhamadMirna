@@ -180,205 +180,179 @@ a {
 }
 
 /* ---------------------------------------------------------------------------
-   Envelope opening overlay
-   A sealed ivory envelope covers the invitation on first load. A click (or
-   Enter/Space) breaks the wax seal, unfolds the top flap, slides the card out
-   of the pocket, then fades the whole scene to reveal the page underneath.
-   Layering is done in 3D (translateZ) so the flap can physically rotate behind
-   the rising card: back paper < card < front pocket < flap < seal.
+   Full-screen envelope opening
+   The whole viewport IS a sealed ivory envelope: four flaps tile the screen
+   and meet at a central wax seal. A click (or Enter/Space) breaks the seal and
+   unfolds the flaps outward — the "papers opening up" — to reveal the
+   invitation behind them. The flaps' outer edges are their hinges, so they fold
+   away past the four sides of the screen; backface-visibility hides each one
+   the moment it passes edge-on, which uncovers the page from the centre out.
 --------------------------------------------------------------------------- */
 .envelope-overlay {
   position: fixed;
   inset: 0;
   z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
   cursor: pointer;
-  opacity: 1;
-  background:
-    radial-gradient(135% 120% at 50% 0%, #4a2c1a 0%, #2a1810 46%, #180d06 100%);
+  background: transparent;
   -webkit-tap-highlight-color: transparent;
-  transition: opacity 0.7s ease;
 }
 
-/* The overlay itself only fades once the seal, flap and card have finished. */
 .envelope-overlay.is-opening {
-  opacity: 0;
   cursor: default;
   pointer-events: none;
-  transition: opacity 0.7s ease 1.35s;
 }
 
-.envelope-scene {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(28px, 9vw, 48px);
-  perspective: 1600px;
-}
-
-.envelope {
-  --env-w: clamp(272px, 80vw, 430px);
-  --env-h: calc(var(--env-w) * 0.64);
-  --seal: calc(var(--env-w) * 0.2);
-  position: relative;
-  width: var(--env-w);
-  height: var(--env-h);
-  transform-style: preserve-3d;
-  transition: transform 0.9s ease 1.2s;
-}
-
-.envelope-overlay.is-opening .envelope {
-  transform: translateY(-2%) scale(0.965);
-}
-
-/* Back paper — the visible body of the envelope. */
-.env-paper {
+.env-stage {
   position: absolute;
   inset: 0;
-  border-radius: 10px;
-  background: linear-gradient(155deg, #f6ecda 0%, #efe0c8 100%);
-  box-shadow:
-    0 30px 60px -22px rgba(18, 9, 3, 0.72),
-    0 10px 22px rgba(18, 9, 3, 0.32),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.4);
-  transform: translateZ(0);
-}
-
-/* The card, tucked fully behind the front pocket when the envelope is closed. */
-.env-letter {
-  position: absolute;
-  left: 11%;
-  bottom: 10%;
-  display: flex;
-  width: 78%;
-  height: 52%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
   overflow: hidden;
-  padding: 8px 12px;
-  border-radius: 4px;
-  background: linear-gradient(180deg, #fffaf0 0%, #fbf3e6 100%);
-  box-shadow:
-    0 8px 20px rgba(18, 9, 3, 0.28),
-    inset 0 0 0 1px rgba(183, 65, 14, 0.14);
-  transform: translateZ(2px);
-  transition: transform 0.9s cubic-bezier(0.22, 0.61, 0.24, 1) 0.55s;
+  perspective: 1500px;
+  pointer-events: none;
 }
 
-.envelope-overlay.is-opening .env-letter {
-  transform: translateZ(2px) translateY(calc(var(--env-h) * -0.92));
-}
-
-.env-letter-label {
-  font-family: var(--serif);
-  font-size: clamp(9px, 2.6vw, 11px);
-  letter-spacing: 0.28em;
-  color: rgba(122, 58, 26, 0.72);
-}
-
-.env-letter-couple {
-  font-family: var(--script);
-  font-size: clamp(26px, 8vw, 38px);
-  line-height: 1.3;
-  color: #7a3a1a;
-}
-
-.env-letter-rule {
-  width: 46px;
-  height: 1px;
-  background: var(--gold-line);
-}
-
-.env-letter-date {
-  font-family: var(--serif);
-  font-size: clamp(10px, 3vw, 13px);
-  letter-spacing: 0.06em;
-  color: rgba(90, 52, 28, 0.82);
-}
-
-/* Front pocket — opaque, full width, so the card stays hidden until it rises. */
-.env-front {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  top: 33%;
-  border-radius: 0 0 10px 10px;
-  background: linear-gradient(170deg, #f1e2c8 0%, #e6d4b4 100%);
-  transform: translateZ(4px);
-}
-
-/* A subtle up-pointing seam painted on top of the opaque pocket. */
-.env-front::after {
+/* The four ivory flaps that tile the viewport into a diamond of seams. */
+.env-flap {
   position: absolute;
   inset: 0;
-  content: "";
-  background: linear-gradient(
-    to top,
-    rgba(120, 70, 30, 0.14),
-    rgba(120, 70, 30, 0) 55%
-  );
-  clip-path: polygon(0 100%, 50% 4%, 100% 100%);
+  backface-visibility: hidden;
+  will-change: transform;
+  transition: transform 1s cubic-bezier(0.5, 0, 0.2, 1);
 }
 
-/* Top flap — folds open around its hinged top edge. */
-.env-flap {
+.env-flap-top {
+  clip-path: polygon(0 0, 100% 0, 50% 50%);
+  transform-origin: 50% 0;
+  background: linear-gradient(180deg, #f8efe0 0%, #f0e3cc 100%);
+}
+
+.env-flap-bottom {
+  clip-path: polygon(0 100%, 100% 100%, 50% 50%);
+  transform-origin: 50% 100%;
+  background: linear-gradient(0deg, #f2e6cf 0%, #e8d9ba 100%);
+}
+
+.env-flap-left {
+  clip-path: polygon(0 0, 0 100%, 50% 50%);
+  transform-origin: 0 50%;
+  background: linear-gradient(90deg, #f5ead6 0%, #ecdec1 100%);
+}
+
+.env-flap-right {
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+  transform-origin: 100% 50%;
+  background: linear-gradient(270deg, #f5ead6 0%, #ecdec1 100%);
+}
+
+.envelope-overlay.is-opening .env-flap-top {
+  transform: rotateX(-180deg);
+  transition-delay: 0.35s;
+}
+
+.envelope-overlay.is-opening .env-flap-left {
+  transform: rotateY(180deg);
+  transition-delay: 0.46s;
+}
+
+.envelope-overlay.is-opening .env-flap-right {
+  transform: rotateY(-180deg);
+  transition-delay: 0.46s;
+}
+
+.envelope-overlay.is-opening .env-flap-bottom {
+  transform: rotateX(180deg);
+  transition-delay: 0.57s;
+}
+
+/* Everything printed on the closed envelope (seams, names, seal, hint). It all
+   fades out first, before the flaps start to unfold. */
+.env-face {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.envelope-overlay.is-opening .env-face {
+  opacity: 0;
+}
+
+.env-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    125% 125% at 50% 42%,
+    transparent 52%,
+    rgba(92, 56, 24, 0.12) 100%
+  );
+}
+
+/* The diagonal seams where the four flaps meet — a soft gold X. */
+.env-seams {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.env-seams line {
+  stroke: rgba(178, 132, 62, 0.4);
+  stroke-width: 1;
+}
+
+.env-couple-block {
   position: absolute;
   top: 0;
   right: 0;
+  bottom: 50%;
   left: 0;
-  height: 52%;
-  border-radius: 10px 10px 0 0;
-  background: linear-gradient(160deg, #f4e7d0 0%, #ead9bb 100%);
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: top center;
-  transform: translateZ(6px) rotateX(0deg);
-  transition: transform 0.8s cubic-bezier(0.5, 0, 0.2, 1) 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 24px 24px calc(clamp(96px, 24vw, 150px) / 2 + clamp(26px, 7vw, 40px));
+  text-align: center;
 }
 
-/* A faint crease down the flap so the fold reads. */
-.env-flap::after {
-  position: absolute;
-  inset: 0;
-  content: "";
-  background: linear-gradient(
-    to bottom,
-    rgba(120, 70, 30, 0) 30%,
-    rgba(120, 70, 30, 0.1) 100%
-  );
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
+.env-label {
+  font-family: var(--serif);
+  font-size: clamp(11px, 3vw, 14px);
+  letter-spacing: 0.3em;
+  color: rgba(122, 58, 26, 0.68);
 }
 
-.envelope-overlay.is-opening .env-flap {
-  transform: translateZ(6px) rotateX(-172deg);
+.env-couple {
+  font-family: var(--script);
+  font-size: clamp(38px, 12vw, 74px);
+  line-height: 1.35;
+  color: #7a3a1a;
 }
 
-/* Wax seal, centred over the flap tip. */
+/* The wax seal, centred where the four flaps meet. */
 .env-seal {
   position: absolute;
+  top: 50%;
   left: 50%;
-  top: 45%;
   display: flex;
-  width: var(--seal);
-  height: var(--seal);
+  width: clamp(96px, 24vw, 150px);
+  height: clamp(96px, 24vw, 150px);
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: radial-gradient(circle at 34% 30%, #a8431d 0%, #7c2b12 52%, #591d0c 100%);
+  background: radial-gradient(
+    circle at 34% 30%,
+    #a8431d 0%,
+    #7c2b12 52%,
+    #591d0c 100%
+  );
   box-shadow:
-    inset 0 2px 5px rgba(255, 210, 170, 0.35),
-    inset 0 -4px 8px rgba(40, 12, 4, 0.55),
-    0 5px 14px rgba(30, 12, 4, 0.5);
-  transform: translate(-50%, -50%) translateZ(9px);
+    inset 0 3px 7px rgba(255, 210, 170, 0.35),
+    inset 0 -6px 12px rgba(40, 12, 4, 0.55),
+    0 8px 22px rgba(30, 12, 4, 0.5);
+  transform: translate(-50%, -50%);
   animation: sealPulse 2.6s ease-in-out infinite;
 }
 
-/* A thin gold ring, the classic wax-seal border. */
 .env-seal::before {
   position: absolute;
   inset: 11%;
@@ -389,51 +363,50 @@ a {
 
 .env-seal-mono {
   font-family: var(--arabic-script);
-  font-size: calc(var(--seal) * 0.52);
+  font-size: clamp(48px, 12vw, 78px);
   line-height: 1;
   color: #f4dca6;
-  text-shadow: 0 1px 2px rgba(40, 12, 4, 0.6);
+  text-shadow: 0 1px 3px rgba(40, 12, 4, 0.6);
 }
 
-/* Breaking the seal: it lifts, tips and fades before the flap opens. */
+/* Breaking the seal: it lifts, tips and fades before the flaps unfold. */
 .envelope-overlay.is-opening .env-seal {
-  animation: none;
   opacity: 0;
-  transform: translate(-50%, -74%) translateZ(9px) scale(1.4) rotate(-14deg);
+  transform: translate(-50%, -50%) scale(1.4) rotate(-13deg);
+  animation: none;
   transition:
     transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.45s ease;
+    opacity 0.4s ease;
 }
 
 .env-hint {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: calc(50% + clamp(78px, 20vw, 120px));
   margin: 0;
+  padding: 0 24px;
+  text-align: center;
   font-family: var(--serif);
-  font-size: clamp(14px, 4vw, 17px);
-  letter-spacing: 0.14em;
-  color: var(--gold);
-  text-shadow: 0 1px 10px rgba(20, 10, 4, 0.6);
+  font-size: clamp(14px, 4vw, 18px);
+  color: #a06a2c;
   animation: hintPulse 2.6s ease-in-out infinite;
-}
-
-.envelope-overlay.is-opening .env-hint {
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 @keyframes sealPulse {
   0%,
   100% {
-    transform: translate(-50%, -50%) translateZ(9px) scale(1);
+    transform: translate(-50%, -50%) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) translateZ(9px) scale(1.05);
+    transform: translate(-50%, -50%) scale(1.05);
   }
 }
 
 @keyframes hintPulse {
   0%,
   100% {
-    opacity: 0.55;
+    opacity: 0.6;
   }
   50% {
     opacity: 1;
@@ -450,20 +423,22 @@ a {
     transform: none !important;
   }
 
-  /* Skip the 3D choreography; the overlay simply crossfades away on open. */
-  .envelope,
-  .env-letter,
-  .env-front,
+  /* Skip the 3D unfold; the envelope simply crossfades away to reveal the page. */
   .env-flap,
-  .env-seal,
-  .env-hint {
+  .env-face,
+  .env-seal {
     animation: none !important;
-    transition: none !important;
+    transition: opacity 0.4s ease !important;
+    transform: none !important;
   }
 
-  .envelope-overlay,
-  .envelope-overlay.is-opening {
-    transition: opacity 0.4s ease;
+  .env-seal {
+    transform: translate(-50%, -50%) !important;
+  }
+
+  .envelope-overlay.is-opening .env-flap,
+  .envelope-overlay.is-opening .env-face {
+    opacity: 0;
   }
 }
 

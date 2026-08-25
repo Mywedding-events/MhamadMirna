@@ -5,11 +5,11 @@ import { copy } from "../lib/translations";
 
 type Phase = "sealed" | "opening" | "gone";
 
-// The flap unfolds, the card slides out, then the whole scene fades. These need
-// to outlast the longest CSS transition below (overlay fade ends at 2.05s).
-const OPEN_DURATION_MS = 2150;
-// With reduced motion the overlay simply crossfades away instead.
-const REDUCED_DURATION_MS = 450;
+// The face fades, then the four flaps unfold outward. This must outlast the
+// slowest flap (bottom: 0.57s delay + 1s transition = 1.57s).
+const OPEN_DURATION_MS = 1750;
+// With reduced motion the whole envelope simply crossfades away instead.
+const REDUCED_DURATION_MS = 480;
 
 function prefersReducedMotion() {
   return (
@@ -66,22 +66,35 @@ export default function EnvelopeOverlay() {
       onClick={open}
       onKeyDown={onKeyDown}
     >
-      <div className="envelope-scene">
-        <div className="envelope">
-          <div className="env-paper" aria-hidden="true" />
-          <div className="env-letter" aria-hidden="true">
-            <span className="env-letter-label">{copy.envelopeLetterLabel}</span>
-            <span className="env-letter-couple">{copy.couple}</span>
-            <span className="env-letter-rule" />
-            <span className="env-letter-date">{copy.dateLine}</span>
+      <div className="env-stage">
+        <div className="env-flap env-flap-top" aria-hidden="true" />
+        <div className="env-flap env-flap-bottom" aria-hidden="true" />
+        <div className="env-flap env-flap-left" aria-hidden="true" />
+        <div className="env-flap env-flap-right" aria-hidden="true" />
+
+        <div className="env-face">
+          <div className="env-vignette" aria-hidden="true" />
+          <svg
+            className="env-seams"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+            aria-hidden="true"
+          >
+            <line x1="0" y1="0" x2="100" y2="100" vectorEffect="non-scaling-stroke" />
+            <line x1="100" y1="0" x2="0" y2="100" vectorEffect="non-scaling-stroke" />
+          </svg>
+
+          <div className="env-couple-block">
+            <span className="env-label">{copy.envelopeLetterLabel}</span>
+            <span className="env-couple">{copy.couple}</span>
           </div>
-          <div className="env-front" aria-hidden="true" />
-          <div className="env-flap" aria-hidden="true" />
+
           <div className="env-seal" aria-hidden="true">
             <span className="env-seal-mono">م</span>
           </div>
+
+          <p className="env-hint">{copy.envelopeHint}</p>
         </div>
-        <p className="env-hint">{copy.envelopeHint}</p>
       </div>
     </div>
   );
