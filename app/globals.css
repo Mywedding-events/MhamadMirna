@@ -192,8 +192,10 @@ a {
 
 /* ---------------------------------------------------------------------------
    Full-screen envelope opening
-   The whole viewport IS a sealed ivory envelope: four flaps tile the screen
-   and meet at a central wax seal. A click (or Enter/Space) breaks the seal and
+   The whole viewport IS a sealed envelope, dressed in the invitation's own
+   cream-and-gold-on-warm palette so the couple's names carry straight through
+   the reveal: four warm-brown flaps tile the screen and meet at a central wax
+   seal. A click (or Enter/Space) breaks the seal and
    unfolds the flaps outward — the "papers opening up" — to reveal the
    invitation behind them. The flaps' outer edges are their hinges, so they fold
    away past the four sides of the screen; backface-visibility hides each one
@@ -230,28 +232,31 @@ a {
   transition: transform 1s cubic-bezier(0.5, 0, 0.2, 1);
 }
 
+/* Warm deep-brown envelope paper so the invitation's cream + gold text reads on
+   it. Each flap carries a slightly different facet of the same tone so the four
+   triangles stay legible where they meet at the seal. */
 .env-flap-top {
   clip-path: polygon(0 0, 100% 0, 50% 50%);
   transform-origin: 50% 0;
-  background: linear-gradient(180deg, #f8efe0 0%, #f0e3cc 100%);
+  background: linear-gradient(180deg, #4a3122 0%, #3a2414 100%);
 }
 
 .env-flap-bottom {
   clip-path: polygon(0 100%, 100% 100%, 50% 50%);
   transform-origin: 50% 100%;
-  background: linear-gradient(0deg, #f2e6cf 0%, #e8d9ba 100%);
+  background: linear-gradient(0deg, #402a1b 0%, #301f0f 100%);
 }
 
 .env-flap-left {
   clip-path: polygon(0 0, 0 100%, 50% 50%);
   transform-origin: 0 50%;
-  background: linear-gradient(90deg, #f5ead6 0%, #ecdec1 100%);
+  background: linear-gradient(90deg, #472f20 0%, #382312 100%);
 }
 
 .env-flap-right {
   clip-path: polygon(100% 0, 100% 100%, 50% 50%);
   transform-origin: 100% 50%;
-  background: linear-gradient(270deg, #f5ead6 0%, #ecdec1 100%);
+  background: linear-gradient(270deg, #472f20 0%, #382312 100%);
 }
 
 .envelope-overlay.is-opening .env-flap-top {
@@ -292,12 +297,13 @@ a {
   inset: 0;
   background: radial-gradient(
     125% 125% at 50% 42%,
-    transparent 52%,
-    rgba(92, 56, 24, 0.12) 100%
+    transparent 45%,
+    rgba(18, 10, 4, 0.5) 100%
   );
 }
 
-/* The diagonal seams where the four flaps meet — a soft gold X. */
+/* The diagonal seams where the four flaps meet — a soft gold X drawn in the
+   invitation's own gold-line colour. */
 .env-seams {
   position: absolute;
   inset: 0;
@@ -306,7 +312,7 @@ a {
 }
 
 .env-seams line {
-  stroke: rgba(178, 132, 62, 0.4);
+  stroke: var(--gold-line);
   stroke-width: 1;
 }
 
@@ -329,14 +335,16 @@ a {
   font-family: var(--serif);
   font-size: clamp(11px, 3vw, 14px);
   letter-spacing: 0.3em;
-  color: rgba(122, 58, 26, 0.68);
+  color: var(--ink-soft);
+  text-shadow: var(--shadow-text);
 }
 
 .env-couple {
   font-family: var(--script);
   font-size: clamp(38px, 12vw, 74px);
   line-height: 1.35;
-  color: #7a3a1a;
+  color: var(--ink);
+  text-shadow: var(--shadow-text);
 }
 
 /* The wax seal, centred where the four flaps meet. */
@@ -400,7 +408,8 @@ a {
   text-align: center;
   font-family: var(--serif);
   font-size: clamp(14px, 4vw, 18px);
-  color: #a06a2c;
+  color: var(--ink-soft);
+  text-shadow: var(--shadow-text);
   animation: hintPulse 2.6s ease-in-out infinite;
 }
 
