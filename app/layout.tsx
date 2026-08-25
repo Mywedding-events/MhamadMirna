@@ -21,33 +21,30 @@ const previewImage = {
   url: coverImageUrl,
   width: 1200,
   height: 630,
-  alt: "Karim and Mirna wedding invitation",
+  alt: "دعوة زفاف محمد وميرنا",
   type: "image/jpeg",
 };
 
 export const metadata: Metadata = {
   metadataBase: siteUrl,
-  title: "Karim & Mirna - Wedding Invitation",
-  description:
-    "Wedding invitation for Karim and Mirna on Sunday, September 20, 2026.",
+  title: "محمد وميرنا - دعوة زفاف",
+  description: "دعوة زفاف محمد وميرنا يوم الإثنين 5 تشرين الأول 2026.",
   alternates: {
     canonical: siteUrl,
   },
   openGraph: {
-    title: "Karim & Mirna - Wedding Invitation",
-    description:
-      "Wedding invitation for Karim and Mirna on Sunday, September 20, 2026.",
+    title: "محمد وميرنا - دعوة زفاف",
+    description: "دعوة زفاف محمد وميرنا يوم الإثنين 5 تشرين الأول 2026.",
     url: siteUrl.toString(),
-    siteName: "Karim & Mirna Wedding Invitation",
+    siteName: "دعوة زفاف محمد وميرنا",
     type: "website",
-    locale: "en_US",
+    locale: "ar_LB",
     images: [previewImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Karim & Mirna - Wedding Invitation",
-    description:
-      "Wedding invitation for Karim and Mirna on Sunday, September 20, 2026.",
+    title: "محمد وميرنا - دعوة زفاف",
+    description: "دعوة زفاف محمد وميرنا يوم الإثنين 5 تشرين الأول 2026.",
     images: [previewImage],
   },
 };
@@ -63,7 +60,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="en" dir="ltr">
+    <html lang="ar" dir="rtl">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link

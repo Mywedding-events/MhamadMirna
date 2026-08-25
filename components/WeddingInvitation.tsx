@@ -4,12 +4,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { supportedImageExtensions } from "../lib/imageFormats";
-import {
-  languageStorageKey,
-  registryPhoneNumber,
-  translations,
-  type Language,
-} from "../lib/translations";
+import { copy, registryPhoneNumber } from "../lib/translations";
 
 const defaultSlides: string[] = [];
 const uploadCacheKey = Date.now().toString(36);
@@ -41,8 +36,8 @@ type InvitationResponse = {
 
 const API_BASE_URL = "https://api.mywedding.events";
 
-// Errors are kept as a kind rather than a finished sentence so they can be
-// re-rendered in whichever language is active when they are shown.
+// Errors are kept as a kind rather than a finished sentence so the copy deck
+// owns the wording shown to guests.
 type ErrorKind = "notFound" | "loadFailed" | "rsvpFailed";
 
 type RequestError = {
@@ -61,8 +56,8 @@ class InvitationRequestError extends Error {
   }
 }
 
-// September 20, 2026 at 6:00 PM Lebanon time (UTC+3 while EEST is in effect).
-const weddingTimestamp = new Date("2026-09-20T18:00:00+03:00").getTime();
+// October 5, 2026 at 7:00 PM Lebanon time (UTC+3 while EEST is in effect).
+const weddingTimestamp = new Date("2026-10-05T19:00:00+03:00").getTime();
 
 type Countdown = {
   days: string;
@@ -132,79 +127,6 @@ function LocationIcon({ className = "" }: { className?: string }) {
       />
       <circle cx="20" cy="16" r="4.5" stroke="currentColor" strokeWidth="1.4" />
     </svg>
-  );
-}
-
-// Storage is unavailable in some in-app browsers, where the invitation is most
-// often opened; the language choice is then simply not remembered.
-function readStoredLanguage(): Language | null {
-  try {
-    const stored = window.localStorage.getItem(languageStorageKey);
-    return stored === "ar" || stored === "en" ? stored : null;
-  } catch {
-    return null;
-  }
-}
-
-function storeLanguage(language: Language) {
-  try {
-    window.localStorage.setItem(languageStorageKey, language);
-  } catch {
-    // Ignored: the toggle still works for this visit.
-  }
-}
-
-function GlobeIcon({ className = "" }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-    >
-      <circle cx="8" cy="8" r="6.4" stroke="currentColor" strokeWidth="1.1" />
-      <path
-        d="M1.6 8h12.8M8 1.6c3.4 3.6 3.4 9.2 0 12.8-3.4-3.6-3.4-9.2 0-12.8z"
-        stroke="currentColor"
-        strokeWidth="1.1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
-function LanguageToggle({
-  label,
-  ariaLabel,
-  labelLanguage,
-  onClick,
-}: {
-  label: string;
-  ariaLabel: string;
-  labelLanguage: Language;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      className="fixed right-[18px] top-[18px] z-30 inline-flex cursor-pointer items-center gap-2 rounded-full border border-[var(--gold-line)] bg-[rgba(76,49,33,0.38)] px-[15px] py-[7px] text-[var(--ink)] shadow-[0_6px_20px_rgba(24,14,8,0.28)] backdrop-blur-[2px] transition duration-300 hover:border-[var(--ink)] hover:bg-white/[0.14] active:scale-95"
-      type="button"
-      onClick={onClick}
-      aria-label={ariaLabel}
-    >
-      <GlobeIcon className="h-[15px] w-[15px] opacity-80" />
-      <span
-        className={`text-shadow-wedding text-[13px] leading-none ${
-          labelLanguage === "ar"
-            ? "font-arabic-wedding tracking-normal"
-            : "font-serif-wedding tracking-[0.14em]"
-        }`}
-        lang={labelLanguage}
-      >
-        {label}
-      </span>
-    </button>
   );
 }
 
@@ -370,7 +292,6 @@ export default function WeddingInvitation({
 }: {
   invitationCode?: string;
 }) {
-  const [language, setLanguage] = useState<Language>("en");
   const [appReady, setAppReady] = useState(false);
   const [slides, setSlides] = useState(defaultSlides);
   const [slidesResolved, setSlidesResolved] = useState(false);
@@ -395,8 +316,6 @@ export default function WeddingInvitation({
       Array.from({ length: sectionCount }, (_, index) => `section-${index + 1}`),
     [],
   );
-  const copy = translations[language];
-  const nextLanguage: Language = language === "en" ? "ar" : "en";
   const activeChromeColor =
     slideChromeColors[activeSlide % slideChromeColors.length] ??
     slideChromeColors[0] ??
@@ -416,9 +335,8 @@ export default function WeddingInvitation({
   ];
 
   const describeError = (error: RequestError) => {
-    // API messages only ever arrive in English, so they are shown as-is in the
-    // English view and replaced by our own copy in the Arabic one.
-    if (language === "en" && error.apiMessage) return error.apiMessage;
+    // API messages only ever arrive in English, so they are replaced by our own
+    // Arabic copy here.
     if (error.kind === "notFound")
       return copy.invitationNotFound(normalizedInvitationCode ?? "");
     if (error.kind === "rsvpFailed") return copy.rsvpFailed;
@@ -426,21 +344,11 @@ export default function WeddingInvitation({
     return copy.invitationLoadFailed;
   };
 
-  const switchLanguage = () => {
-    setLanguage(nextLanguage);
-    storeLanguage(nextLanguage);
-  };
-
   useEffect(() => {
-    const stored = readStoredLanguage();
-    if (stored) setLanguage(stored);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = language;
-    document.documentElement.dir = copy.dir;
+    document.documentElement.lang = "ar";
+    document.documentElement.dir = "rtl";
     document.title = copy.documentTitle;
-  }, [language, copy.dir, copy.documentTitle]);
+  }, []);
 
   useEffect(() => {
     setCountdown(getCountdown());
@@ -900,6 +808,9 @@ export default function WeddingInvitation({
           data-screen-label="01 Welcome"
         >
           <div className="w-full max-w-[560px]">
+            <p className="reveal text-shadow-wedding font-arabic-wedding mx-auto mb-[clamp(20px,7vw,34px)] max-w-[500px] text-[clamp(15px,4.4vw,20px)] leading-[1.9] text-[var(--ink-soft)]">
+              {copy.verse}
+            </p>
             <h1 className="reveal text-shadow-wedding font-script my-[0.06em] pb-[0.1em] text-[clamp(44px,12.5vw,86px)] leading-[1.06] text-[var(--ink)]">
               {copy.couple}
             </h1>
@@ -965,16 +876,6 @@ export default function WeddingInvitation({
           data-screen-label="02 Invitation"
         >
           <div className="w-full max-w-[430px]">
-            <p
-              className={`reveal text-shadow-wedding text-[20px] leading-[1.9] text-[var(--ink)] ${
-                language === "ar"
-                  ? "font-arabic-wedding"
-                  : "font-serif-wedding italic"
-              }`}
-            >
-              {copy.scripture}
-            </p>
-            <div className="wedding-rule reveal" />
             <p className="reveal text-shadow-wedding mb-4 font-script text-[clamp(42px,11vw,50px)] leading-[1.05] text-(--ink)">
               {copy.coupleStacked[0]}
               <br />
@@ -987,6 +888,10 @@ export default function WeddingInvitation({
             </p>
             <p className="reveal text-shadow-wedding font-body-wedding text-[17px] leading-[1.75] text-[var(--ink)]">
               {copy.weddingDate}
+            </p>
+            <div className="wedding-rule reveal" />
+            <p className="reveal text-shadow-wedding font-serif-wedding text-[16px] leading-[1.7] tracking-[0.03em] text-[var(--gold)]">
+              {copy.confirmBy}
             </p>
           </div>
         </section>
@@ -1005,26 +910,16 @@ export default function WeddingInvitation({
             <p className="reveal text-shadow-wedding font-body-wedding mt-1 text-[17px] leading-[1.55] tracking-[0.04em] text-(--ink) min-[390px]:mt-1.5 min-[390px]:leading-[1.75]">
               {copy.weddingDate}
             </p>
-            <LocationIcon className="reveal mx-auto mt-5 block h-10 w-9 text-(--ink) drop-shadow-[0_2px_8px_rgba(30,18,10,0.45)] min-[390px]:mt-[30px] min-[390px]:h-11 min-[390px]:w-10" />
-            <p className="reveal text-shadow-wedding mt-1 font-serif-wedding text-[22px] leading-[1.55] text-(--ink) min-[390px]:leading-[1.75]">
-              {copy.church}
-            </p>
-            <p className="reveal text-shadow-wedding font-serif-wedding text-[22px] leading-[1.55] text-(--ink) min-[390px]:leading-[1.75]">
+            <p className="reveal text-shadow-wedding font-body-wedding text-[17px] leading-[1.55] tracking-[0.04em] text-(--ink) min-[390px]:leading-[1.75]">
               {copy.ceremonyTime}
             </p>
-            <ButtonLink
-              className="reveal mt-4 max-[380px]:px-5 max-[380px]:py-[11px] max-[380px]:text-sm min-[390px]:mt-[22px]"
-              href="https://maps.app.goo.gl/fF3r5f79Bjds4QN97?g_st=iw"
-            >
-              {copy.churchLink}
-            </ButtonLink>
-            <div className="wedding-rule reveal my-4 max-[380px]:my-3" />
-            <p className="reveal text-shadow-wedding mt-2.5 font-serif-wedding text-[22px] leading-[1.55] text-(--ink) min-[390px]:mt-3.5 min-[390px]:leading-[1.75]">
+            <LocationIcon className="reveal mx-auto mt-5 block h-10 w-9 text-(--ink) drop-shadow-[0_2px_8px_rgba(30,18,10,0.45)] min-[390px]:mt-[30px] min-[390px]:h-11 min-[390px]:w-10" />
+            <p className="reveal text-shadow-wedding mt-1 font-serif-wedding text-[22px] leading-[1.55] text-(--ink) min-[390px]:leading-[1.75]">
               {copy.venue}
             </p>
             <ButtonLink
               className="reveal mt-4 max-[380px]:px-5 max-[380px]:py-[11px] max-[380px]:text-sm min-[390px]:mt-[18px]"
-              href="https://maps.app.goo.gl/jc3XXaWpwbKVc2267?g_st=iw"
+              href="https://maps.app.goo.gl/hdx3n2FUuPiWfUDh8"
             >
               {copy.venueLink}
             </ButtonLink>
@@ -1071,13 +966,9 @@ export default function WeddingInvitation({
             <p className="reveal text-shadow-wedding mt-1.5 font-serif-wedding text-[15px] tracking-[0.04em] text-[var(--ink-soft)]">
               {copy.rsvpDeadline}
             </p>
-            {/* Italic is skipped in Arabic, where the Naskh face has no italic
-                cut and the browser would slant it synthetically. */}
-            <p
-              className={`reveal text-shadow-wedding mx-auto mt-2.5 max-w-[340px] font-serif-wedding text-[14px] leading-[1.6] tracking-[0.03em] text-[var(--ink-soft)] ${
-                language === "ar" ? "" : "italic"
-              }`}
-            >
+            {/* Italic is skipped here: the Naskh face has no italic cut and the
+                browser would slant it synthetically. */}
+            <p className="reveal text-shadow-wedding mx-auto mt-2.5 max-w-[340px] font-serif-wedding text-[14px] leading-[1.6] tracking-[0.03em] text-[var(--ink-soft)]">
               {copy.adultsOnlyNote}
             </p>
             <div className="wedding-rule reveal" />
@@ -1163,13 +1054,6 @@ export default function WeddingInvitation({
           </div>
         </section>
       </main>
-
-      <LanguageToggle
-        label={copy.switchLabel}
-        ariaLabel={copy.switchAria}
-        labelLanguage={nextLanguage}
-        onClick={switchLanguage}
-      />
 
       <nav
         className="fixed right-[18px] top-1/2 z-30 flex -translate-y-1/2 flex-col gap-[13px]"
