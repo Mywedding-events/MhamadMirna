@@ -694,11 +694,11 @@ export default function WeddingInvitation({
             <p className="reveal text-shadow-wedding font-serif-wedding text-[clamp(13px,3.6vw,16px)] uppercase leading-[1.4] tracking-[0.2em] text-[var(--ink-soft)]">
               {copy.dateLine}
             </p>
-            <div className="reveal mt-[clamp(26px,8vw,44px)] flex items-start justify-center gap-[clamp(6px,2.5vw,18px)]">
+            <div className="reveal mt-[clamp(26px,8vw,44px)] flex items-start justify-center gap-[clamp(2px,1vw,8px)]">
               {countdownUnits.map((unit) => (
                 <div
                   key={unit.key}
-                  className="flex min-w-[clamp(52px,15vw,74px)] flex-col items-center"
+                  className="flex min-w-[clamp(44px,12vw,60px)] flex-col items-center"
                 >
                   <span
                     dir="ltr"
