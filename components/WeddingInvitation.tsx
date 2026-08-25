@@ -889,10 +889,6 @@ export default function WeddingInvitation({
             <p className="reveal text-shadow-wedding font-body-wedding text-[17px] leading-[1.75] text-[var(--ink)]">
               {copy.weddingDate}
             </p>
-            <div className="wedding-rule reveal" />
-            <p className="reveal text-shadow-wedding font-serif-wedding text-[16px] leading-[1.7] tracking-[0.03em] text-[var(--gold)]">
-              {copy.confirmBy}
-            </p>
           </div>
         </section>
 

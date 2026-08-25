@@ -19,7 +19,6 @@ export type Copy = {
   scrollCue: string;
   invitationBody: string;
   weddingDate: string;
-  confirmBy: string;
   ceremonyTitle: string;
   ceremonyTime: string;
   venue: string;
@@ -69,7 +68,6 @@ export const copy: Copy = {
   invitationBody:
     "بقلوبٍ مفعمة بالفرح، ومع عائلتينا، ندعوكم لمشاركتنا فرحنا وحضور حفل زفافنا.",
   weddingDate: "الإثنين 5 تشرين الأول 2026",
-  confirmBy: "نرجو تأكيد الحضور قبل 27 أيلول 2026.",
   ceremonyTitle: "حفل الزفاف",
   ceremonyTime: "7:00 مساءً",
   venue: "قصر جبيل",
