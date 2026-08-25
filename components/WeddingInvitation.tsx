@@ -10,14 +10,19 @@ import { copy, registryPhoneNumber } from "../lib/translations";
 const defaultSlides: string[] = [];
 const uploadCacheKey = Date.now().toString(36);
 
+// Warm ivory/cream sampled from the invitation photo (flat field ≈ #e6ded3,
+// overall average ≈ #e3dace). These sit behind and around the artwork — the
+// desktop letterbox, the pre-decode backdrop — so they blend into the paper
+// instead of ringing it with a contrasting colour. Gentle in-family variations
+// keep any future slide on the same warm ivory.
 const slideChromeColors = [
-  "#b7410e",
-  "#a83a12",
-  "#c14918",
-  "#9f3010",
-  "#ba3d13",
-  "#8f2c0d",
-  "#c6541f",
+  "#e6ded3",
+  "#e3dace",
+  "#e8e1d6",
+  "#e1d8cc",
+  "#e5ddd0",
+  "#e0d7ca",
+  "#e7dfd4",
 ];
 
 const sectionCount = 6;
@@ -320,12 +325,12 @@ export default function WeddingInvitation({
   const activeChromeColor =
     slideChromeColors[activeSlide % slideChromeColors.length] ??
     slideChromeColors[0] ??
-    "#b7410e";
-  // The slide chrome is a dark rust that the photos blend into, but on a cold
-  // start there is no photo to blend with yet, so it reads as a red flash. Until
-  // the first slide has decoded the backdrop stays on the off-white page colour.
-  // If discovery finishes without finding any slide the chrome comes back, since
-  // the cream copy is only legible over the dark backdrop.
+    "#e6ded3";
+  // The slide chrome is the same warm ivory as the invitation photo, so the
+  // backdrop and any desktop letterbox melt into the artwork. Until the first
+  // slide has decoded the backdrop stays on the off-white page colour, and if
+  // discovery finishes without finding any slide the ivory chrome takes over —
+  // either way the copy keeps its dark text-shadow to stay legible on cream.
   const awaitingFirstSlide = slides.length === 0 && !slidesResolved;
   const normalizedInvitationCode = invitationCode?.trim();
   const countdownUnits = [
