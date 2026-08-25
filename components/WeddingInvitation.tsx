@@ -669,8 +669,8 @@ export default function WeddingInvitation({
         />
       </div>
       {/* No dimming veil and no brightness trim: the photo renders at its
-          natural brightness. The copy sits on top in warm-brown ink
-          (--ink / #4a3826) with no text-shadow block behind the glyphs. */}
+          natural brightness. The copy sits on top in deep sage ink
+          (--ink / #4a5540) with no text-shadow block behind the glyphs. */}
 
       <main className="relative z-[2]">
         <section
@@ -683,7 +683,9 @@ export default function WeddingInvitation({
               {copy.basmala}
             </p>
             <p className="reveal text-shadow-wedding font-arabic-wedding mx-auto mb-[clamp(20px,7vw,34px)] max-w-[500px] text-[clamp(15px,4.4vw,20px)] leading-[1.9] text-[var(--ink-soft)]">
-              {copy.verse}
+              {copy.verse[0]}
+              <br />
+              {copy.verse[1]}
             </p>
             <h1 className="reveal text-shadow-wedding font-script my-[0.06em] pb-[0.1em] text-[clamp(44px,12.5vw,86px)] leading-[1.06] text-[var(--ink)]">
               {copy.couple}
@@ -692,7 +694,7 @@ export default function WeddingInvitation({
             <p className="reveal text-shadow-wedding font-serif-wedding text-[clamp(13px,3.6vw,16px)] uppercase leading-[1.4] tracking-[0.2em] text-[var(--ink-soft)]">
               {copy.dateLine}
             </p>
-            <div className="reveal mt-[clamp(26px,8vw,44px)] flex items-start justify-center gap-[clamp(14px,5vw,34px)]">
+            <div className="reveal mt-[clamp(26px,8vw,44px)] flex items-start justify-center gap-[clamp(6px,2.5vw,18px)]">
               {countdownUnits.map((unit) => (
                 <div
                   key={unit.key}
@@ -754,8 +756,10 @@ export default function WeddingInvitation({
               <br />
               {copy.coupleStacked[2]}
             </p>
-            <p className="reveal text-shadow-wedding font-body-wedding text-[17px] leading-[1.75] text-[var(--ink)]">
-              {copy.invitationBody}
+            <p className="reveal text-shadow-wedding font-body-wedding text-[clamp(15px,4.4vw,17px)] leading-[1.75] text-[var(--ink)]">
+              {copy.invitationBody[0]}
+              <br />
+              {copy.invitationBody[1]}
             </p>
             <p className="reveal text-shadow-wedding font-body-wedding text-[17px] leading-[1.75] text-[var(--ink)]">
               {copy.weddingDate}
@@ -916,7 +920,9 @@ export default function WeddingInvitation({
         >
           <div className="flex w-full max-w-[430px] flex-col items-center">
             <h2 className="reveal text-shadow-wedding font-script text-[clamp(46px,13vw,62px)] leading-[1.04] text-[var(--ink)]">
-              {copy.closingTitle}
+              {copy.closingTitle[0]}
+              <br />
+              {copy.closingTitle[1]}
             </h2>
           </div>
         </section>
