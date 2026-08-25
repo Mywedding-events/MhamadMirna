@@ -25,6 +25,13 @@
     0 1px 2px rgba(18, 10, 4, 0.9),
     0 2px 8px rgba(18, 10, 4, 0.75),
     0 3px 20px rgba(18, 10, 4, 0.6);
+  /* The sealed envelope reuses the invitation's warm-gold accent (--gold, hue
+     ~78) so the cover and the letter behind it read as one suite. The gold is
+     deepened here because the envelope prints on light ivory paper, where the
+     invitation's own light gold — which lives on dark photos — would wash out. */
+  --env-gold-strong: oklch(0.52 0.105 78);
+  --env-gold: oklch(0.6 0.09 78);
+  --env-gold-line: oklch(0.72 0.075 78 / 0.55);
 }
 
 /* Arabic swaps the whole type system: the Latin display/serif faces have no
@@ -306,7 +313,7 @@ a {
 }
 
 .env-seams line {
-  stroke: rgba(178, 132, 62, 0.4);
+  stroke: var(--env-gold-line);
   stroke-width: 1;
 }
 
@@ -329,14 +336,14 @@ a {
   font-family: var(--serif);
   font-size: clamp(11px, 3vw, 14px);
   letter-spacing: 0.3em;
-  color: rgba(122, 58, 26, 0.68);
+  color: var(--env-gold);
 }
 
 .env-couple {
   font-family: var(--script);
   font-size: clamp(38px, 12vw, 74px);
   line-height: 1.35;
-  color: #7a3a1a;
+  color: var(--env-gold-strong);
 }
 
 /* The wax seal, centred where the four flaps meet. */
@@ -400,7 +407,7 @@ a {
   text-align: center;
   font-family: var(--serif);
   font-size: clamp(14px, 4vw, 18px);
-  color: #a06a2c;
+  color: var(--env-gold);
   animation: hintPulse 2.6s ease-in-out infinite;
 }
 
