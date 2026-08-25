@@ -670,7 +670,7 @@ export default function WeddingInvitation({
       </div>
       {/* No dimming veil and no brightness trim: the photo renders at its
           natural brightness. The copy sits on top in deep sage ink
-          (--ink / #4a5540) with no text-shadow block behind the glyphs. */}
+          (--ink / #465448) with no text-shadow block behind the glyphs. */}
 
       <main className="relative z-[2]">
         <section
@@ -756,7 +756,7 @@ export default function WeddingInvitation({
               <br />
               {copy.coupleStacked[2]}
             </p>
-            <p className="reveal text-shadow-wedding font-body-wedding text-[clamp(15px,4.4vw,17px)] leading-[1.75] text-[var(--ink)]">
+            <p className="reveal text-shadow-wedding font-body-wedding text-[17px] leading-[1.75] text-[var(--ink)]">
               {copy.invitationBody[0]}
               <br />
               {copy.invitationBody[1]}

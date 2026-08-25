@@ -11,11 +11,11 @@
     serif;
   --page-bg: #f6f2ec;
   --cream: #fbf3e9;
-  /* Deep sage/olive green, drawn to sit with the warm-ivory floral artwork:
+  /* Deep sage green, drawn to sit with the warm-ivory floral artwork:
      it echoes the botanical embossing and pairs with the gold accent while
      keeping a strong, legible contrast against the cream. */
-  --ink: #4a5540;
-  --ink-soft: rgba(74, 85, 64, 0.82);
+  --ink: #465448;
+  --ink-soft: rgba(70, 84, 72, 0.82);
   --gold: oklch(0.82 0.075 78);
   --gold-line: oklch(0.86 0.06 80 / 0.55);
   --slide-chrome-color: #e6ded3;
