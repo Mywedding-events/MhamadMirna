@@ -814,9 +814,6 @@ export default function WeddingInvitation({
             <h1 className="reveal text-shadow-wedding font-script my-[0.06em] pb-[0.1em] text-[clamp(44px,12.5vw,86px)] leading-[1.06] text-[var(--ink)]">
               {copy.couple}
             </h1>
-            <p className="reveal text-shadow-wedding font-serif-wedding text-[clamp(22px,6vw,32px)] italic leading-[1.3] text-[var(--ink)]">
-              {copy.announcement}
-            </p>
             <div className="wedding-rule reveal" />
             <p className="reveal text-shadow-wedding font-serif-wedding text-[clamp(13px,3.6vw,16px)] uppercase leading-[1.4] tracking-[0.2em] text-[var(--ink-soft)]">
               {copy.dateLine}
