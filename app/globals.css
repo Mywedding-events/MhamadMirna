@@ -11,12 +11,15 @@
     serif;
   --page-bg: #f6f2ec;
   --cream: #fbf3e9;
-  --ink: #4a3826;
-  --ink-soft: rgba(74, 56, 38, 0.82);
+  /* Deep sage green, drawn to sit with the warm-ivory floral artwork:
+     it echoes the botanical embossing and pairs with the gold accent while
+     keeping a strong, legible contrast against the cream. */
+  --ink: #465448;
+  --ink-soft: rgba(70, 84, 72, 0.82);
   --gold: oklch(0.82 0.075 78);
   --gold-line: oklch(0.86 0.06 80 / 0.55);
   --slide-chrome-color: #e6ded3;
-  /* The copy prints in warm-brown ink directly on the artwork, with no shadow
+  /* The copy prints in deep sage ink directly on the artwork, with no shadow
      block behind the glyphs. */
   --shadow-text: none;
   /* The sealed envelope reuses the invitation's warm-gold accent (--gold, hue
