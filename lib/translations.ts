@@ -5,6 +5,7 @@ export type Copy = {
   sections: readonly string[];
   navAria: string;
   goToSection: (position: number, section: string) => string;
+  basmala: string;
   verse: string;
   couple: string;
   coupleStacked: readonly [string, string, string];
@@ -55,6 +56,7 @@ export const copy: Copy = {
   navAria: "أقسام الدعوة",
   goToSection: (position, section) =>
     `الانتقال إلى القسم ${position}: ${section}`,
+  basmala: "بِسْمِ اللَّهِ الرَّحْمَـٰنِ الرَّحِيمِ",
   verse:
     "وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنْفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَة",
   couple: "محمد وميرنا",
