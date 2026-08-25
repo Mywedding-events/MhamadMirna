@@ -80,7 +80,7 @@ export const copy: Copy = {
   registryPhoneLabel: "رقم الهاتف:",
   rsvpTitle: "يشرّفنا حضوركم!",
   rsvpDeadline: "نرجو تأكيد حضوركم قبل 27 أيلول 2026.",
-  adultsOnlyNote: "الأطفال في رعاية من تحبون، والأمسية للكبار.",
+  adultsOnlyNote: "نومًا هنيئًا لأطفالكم",
   guestCountLabel: "عدد المدعوين:",
   loadingInvitation: "جارٍ تحميل دعوتكم...",
   noInvitationCode: "لم يتم إدخال رمز الدعوة.",
