@@ -4,26 +4,19 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import EnvelopeOverlay from "./EnvelopeOverlay";
-import { supportedImageExtensions } from "../lib/imageFormats";
 import { copy, registryPhoneNumber } from "../lib/translations";
 
-const defaultSlides: string[] = [];
-const uploadCacheKey = Date.now().toString(36);
+// The single invitation photo is the only background art, so it is hard-wired
+// here (and preloaded in the document <head>) rather than discovered at runtime.
+// The browser fetches it while the sealed envelope is still on screen, so the
+// moment a guest breaks the seal the photo is already loaded behind it.
+const backgroundImage = "/uploads/1.jpeg";
 
-// Warm ivory/cream sampled from the invitation photo (flat field ≈ #e6ded3,
-// overall average ≈ #e3dace). These sit behind and around the artwork — the
-// desktop letterbox, the pre-decode backdrop — so they blend into the paper
-// instead of ringing it with a contrasting colour. Gentle in-family variations
-// keep any future slide on the same warm ivory.
-const slideChromeColors = [
-  "#e6ded3",
-  "#e3dace",
-  "#e8e1d6",
-  "#e1d8cc",
-  "#e5ddd0",
-  "#e0d7ca",
-  "#e7dfd4",
-];
+// Warm ivory/cream sampled from the invitation photo (flat field ≈ #e6ded3).
+// It sits behind and around the artwork — the desktop letterbox and the
+// pre-decode backdrop — so the chrome blends into the paper instead of ringing
+// it with a contrasting colour.
+const chromeColor = "#e6ded3";
 
 const sectionCount = 6;
 
@@ -234,74 +227,12 @@ async function waitForPageAssets(signal: AbortSignal) {
   await Promise.race([ready(), timeout]);
 }
 
-function probeImage(src: string, signal: AbortSignal) {
-  return new Promise<boolean>((resolve) => {
-    if (signal.aborted) {
-      resolve(false);
-      return;
-    }
-
-    const image = new window.Image();
-    let settled = false;
-    const done = (exists: boolean) => {
-      if (settled) return;
-      settled = true;
-      image.onload = null;
-      image.onerror = null;
-      signal.removeEventListener("abort", onAbort);
-      resolve(exists);
-    };
-    const onAbort = () => done(false);
-
-    signal.addEventListener("abort", onAbort, { once: true });
-    image.onload = () => {
-      image
-        .decode()
-        .catch(() => undefined)
-        .then(() => done(true));
-    };
-    image.onerror = () => done(false);
-    image.src = src;
-  });
-}
-
-async function findNumberedImage(index: number, signal: AbortSignal) {
-  for (const extension of supportedImageExtensions) {
-    const src = `/uploads/${index}.${extension}?v=${uploadCacheKey}`;
-    if (await probeImage(src, signal)) return src;
-    if (signal.aborted) return null;
-  }
-
-  return null;
-}
-
-async function discoverNumberedSlides(
-  signal: AbortSignal,
-  onSlideReady: (src: string) => void,
-) {
-  const discovered: string[] = [];
-  let index = 1;
-
-  while (!signal.aborted) {
-    const src = await findNumberedImage(index, signal);
-    if (!src) break;
-    discovered.push(src);
-    onSlideReady(src);
-    index += 1;
-  }
-
-  return discovered;
-}
-
 export default function WeddingInvitation({
   invitationCode,
 }: {
   invitationCode?: string;
 }) {
   const [appReady, setAppReady] = useState(false);
-  const [slides, setSlides] = useState(defaultSlides);
-  const [slidesResolved, setSlidesResolved] = useState(false);
-  const [activeSlide, setActiveSlide] = useState(0);
   const [activeSection, setActiveSection] = useState(0);
   const [cueHidden, setCueHidden] = useState(false);
   const [invitees, setInvitees] = useState<Invitee[]>([]);
@@ -322,16 +253,6 @@ export default function WeddingInvitation({
       Array.from({ length: sectionCount }, (_, index) => `section-${index + 1}`),
     [],
   );
-  const activeChromeColor =
-    slideChromeColors[activeSlide % slideChromeColors.length] ??
-    slideChromeColors[0] ??
-    "#e6ded3";
-  // The slide chrome is the same warm ivory as the invitation photo, so the
-  // backdrop and any desktop letterbox melt into the artwork. Until the first
-  // slide has decoded the backdrop stays on the off-white page colour, and if
-  // discovery finishes without finding any slide the ivory chrome takes over —
-  // either way the copy keeps its dark text-shadow to stay legible on cream.
-  const awaitingFirstSlide = slides.length === 0 && !slidesResolved;
   const normalizedInvitationCode = invitationCode?.trim();
   const countdownUnits = [
     { key: "days", label: copy.countdown.days, value: countdown?.days },
@@ -370,26 +291,6 @@ export default function WeddingInvitation({
   useEffect(() => {
     const controller = new AbortController();
 
-    setSlides([]);
-    setSlidesResolved(false);
-    setActiveSlide(0);
-    discoverNumberedSlides(controller.signal, (src) => {
-      if (controller.signal.aborted) return;
-      setSlides((currentSlides) =>
-        currentSlides.includes(src) ? currentSlides : [...currentSlides, src],
-      );
-    }).then((nextSlides) => {
-      if (controller.signal.aborted) return;
-      setActiveSlide((index) => (index < nextSlides.length ? index : 0));
-      setSlidesResolved(true);
-    });
-
-    return () => controller.abort();
-  }, []);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
     waitForPageAssets(controller.signal)
       .catch(() => undefined)
       .then(() => {
@@ -402,33 +303,17 @@ export default function WeddingInvitation({
   }, []);
 
   useEffect(() => {
-    if (!appReady || slides.length <= 1) return;
-
-    const slideTimer = window.setInterval(() => {
-      setActiveSlide((index) => (index + 1) % slides.length);
-    }, 2200);
-
-    return () => {
-      window.clearInterval(slideTimer);
-    };
-  }, [appReady, slides.length]);
-
-  useEffect(() => {
     if (!appReady) return;
 
     const themeColorMeta =
       document.querySelector<HTMLMetaElement>('meta[name="theme-color"]') ??
       document.head.appendChild(document.createElement("meta"));
 
-    // Browser chrome stays on the page colour; only the in-page backdrop
-    // follows the slide.
+    // Browser chrome stays on the page colour; the in-page backdrop keeps the
+    // warm-ivory chrome colour (matched by --slide-chrome-color in globals.css).
     themeColorMeta.name = "theme-color";
     themeColorMeta.content = "#f6f2ec";
-    document.documentElement.style.setProperty(
-      "--slide-chrome-color",
-      activeChromeColor,
-    );
-  }, [activeChromeColor, appReady]);
+  }, [appReady]);
 
   useEffect(() => {
     if (!appReady) return;
@@ -756,42 +641,32 @@ export default function WeddingInvitation({
   return (
     <>
       <EnvelopeOverlay />
+      {/* The invitation photo is rendered (and preloaded) from the very first
+          paint, sitting behind the sealed envelope, so it is already loaded the
+          instant a guest breaks the seal — no pop-in on open. */}
       <div
-        className={`fixed inset-0 z-0 ${awaitingFirstSlide ? "" : "bg-fallback"}`}
-        style={{
-          backgroundColor: awaitingFirstSlide
-            ? "var(--page-bg)"
-            : activeChromeColor,
-        }}
+        className="fixed inset-0 z-0 bg-fallback"
+        style={{ backgroundColor: chromeColor }}
         aria-hidden="true"
       >
-        {slides.map((slide, index) => (
-          <div
-            key={slide}
-            className={`absolute inset-0 transition-opacity duration-1100 ease-in-out ${
-              activeSlide === index ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            <Image
-              src={slide}
-              alt=""
-              fill
-              priority={index === 0}
-              sizes="100vw"
-              unoptimized
-              className="scale-105 object-cover object-[center_30%] brightness-[0.95] saturate-[1] md:scale-110 md:brightness-[0.85] md:blur-[10px]"
-            />
-            <Image
-              src={slide}
-              alt=""
-              fill
-              priority={index === 0}
-              sizes="100vw"
-              unoptimized
-              className="hidden object-contain object-center brightness-[0.95] saturate-[1] md:block"
-            />
-          </div>
-        ))}
+        <Image
+          src={backgroundImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          unoptimized
+          className="scale-105 object-cover object-[center_30%] brightness-[0.95] saturate-[1] md:scale-110 md:brightness-[0.85] md:blur-[10px]"
+        />
+        <Image
+          src={backgroundImage}
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          unoptimized
+          className="hidden object-contain object-center brightness-[0.95] saturate-[1] md:block"
+        />
       </div>
       {/* The page-wide dimming veil is gone and the photos now render at
           near-natural brightness (only a slight trim so highlights don't blow
