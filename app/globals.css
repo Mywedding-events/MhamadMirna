@@ -11,22 +11,16 @@
     serif;
   --page-bg: #f6f2ec;
   --cream: #fbf3e9;
-  /* Warm ivory-cream, sampled to sit with the invitation artwork. The copy is
-     printed this light on purpose and lifted off the photo by a black aura
-     (--shadow-text) so it never fades into the bright areas of the background. */
-  --ink: #fcf6ee;
-  --ink-soft: rgba(252, 246, 238, 0.82);
+  /* Muted sage green (#465448 = rgb(70, 84, 72)); --ink-soft is the same tone
+     at 82% opacity for secondary copy. The glyphs carry no shadow — they sit
+     directly on the artwork. */
+  --ink: #465448;
+  --ink-soft: rgba(70, 84, 72, 0.82);
   --gold: oklch(0.82 0.075 78);
   --gold-line: oklch(0.86 0.06 80 / 0.55);
   --slide-chrome-color: #e6ded3;
-  /* A soft black aura ringed around every glyph. It layers several blurred
-     black shadows so the light ivory copy (--ink) keeps a legible dark halo on
-     all sides and never washes out against bright areas of the background. */
-  --shadow-text:
-    0 0 2px rgba(0, 0, 0, 0.85),
-    0 0 6px rgba(0, 0, 0, 0.6),
-    0 0 14px rgba(0, 0, 0, 0.45),
-    0 1px 4px rgba(0, 0, 0, 0.55);
+  /* No aura around the glyphs: the copy renders with no text-shadow. */
+  --shadow-text: none;
   /* The sealed envelope reuses the invitation's warm-gold accent (--gold, hue
      ~78) so the cover and the letter behind it read as one suite. The gold is
      deepened here because the envelope prints on light ivory paper, where the
