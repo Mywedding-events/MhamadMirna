@@ -680,7 +680,7 @@ export default function WeddingInvitation({
           data-screen-label="01 Welcome"
         >
           <div className="w-full max-w-[560px]">
-            <p className="reveal text-shadow-wedding font-arabic-wedding mx-auto mb-[clamp(18px,6vw,30px)] max-w-[500px] text-[clamp(19px,5.4vw,28px)] leading-[1.8] text-[var(--gold)]">
+            <p className="reveal text-shadow-wedding font-arabic-wedding mx-auto mb-[clamp(18px,6vw,30px)] max-w-[500px] text-[clamp(19px,5.4vw,28px)] leading-[1.8] text-[var(--ink)]">
               {copy.basmala}
             </p>
             <p className="reveal text-shadow-wedding font-arabic-wedding mx-auto mb-[clamp(20px,7vw,34px)] max-w-[500px] text-[clamp(15px,4.4vw,20px)] leading-[1.9] text-[var(--ink-soft)]">
