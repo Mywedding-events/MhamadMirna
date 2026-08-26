@@ -669,9 +669,9 @@ export default function WeddingInvitation({
         />
       </div>
       {/* No dimming veil and no brightness trim: the photo renders at its
-          natural brightness. The copy sits on top in light ivory ink
-          (--ink / #fcf6ee), lifted off the artwork by a soft black aura
-          (--shadow-text) so it never fades into bright areas of the photo. */}
+          natural brightness. The copy sits on top in muted sage ink
+          (--ink / #465448) with no shadow (--shadow-text: none) around the
+          glyphs. */}
 
       <main className="relative z-[2]">
         <section
