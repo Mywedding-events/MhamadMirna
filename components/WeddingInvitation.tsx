@@ -173,14 +173,15 @@ function RsvpButton({
 }) {
   return (
     <button
-      className={`inline-flex min-w-[82px] cursor-pointer items-center justify-center rounded-[2px] border px-[13px] py-[9px] font-serif-wedding text-[13px] tracking-[0.06em] transition duration-300 active:scale-95 ${
+      className={`inline-flex min-h-[42px] min-w-[82px] cursor-pointer items-center justify-center rounded-[3px] border px-[14px] py-[9px] font-serif-wedding text-[14px] font-medium tracking-[0.04em] shadow-[0_2px_8px_rgba(70,84,72,0.10)] transition duration-300 active:scale-95 ${
         active
           ? variant === "accept"
-            ? "border-transparent bg-[oklch(0.82_0.075_78/0.9)] font-semibold text-[#3a2615]"
-            : "border-transparent bg-[rgba(252,246,238,0.92)] font-semibold text-[#4a3220]"
-          : "border-[var(--gold-line)] bg-white/[0.04] text-[var(--ink)] hover:border-[var(--ink)] hover:bg-white/[0.14]"
+            ? "border-[var(--ink)] bg-[var(--ink)] font-semibold text-[var(--cream)]"
+            : "border-[#715946] bg-[#715946] font-semibold text-[#fffaf3]"
+          : "border-[rgba(70,84,72,0.5)] bg-[rgba(251,243,233,0.76)] text-[var(--ink)] hover:border-[var(--ink)] hover:bg-[rgba(251,243,233,0.96)]"
       }`}
       type="button"
+      aria-pressed={active}
       onClick={onClick}
     >
       {label}
@@ -860,13 +861,13 @@ export default function WeddingInvitation({
               </p>
             ) : invitees.length > 0 ? (
               <>
-                <div className="reveal space-y-3">
+                <div className="reveal mx-auto flex max-w-[360px] flex-col gap-3">
                   {invitees.map((invitee) => (
                     <div
                       key={invitee.id}
-                      className="flex items-center justify-between gap-3 border-y border-[rgba(252,246,238,0.16)] py-3 text-left"
+                      className="flex items-center justify-center gap-4 border-y border-[rgba(70,84,72,0.16)] py-3.5 max-[380px]:flex-col max-[380px]:gap-2.5"
                     >
-                      <span className="text-shadow-wedding font-serif-wedding text-[15px] text-[var(--ink)]">
+                      <span className="text-shadow-wedding w-[132px] shrink-0 text-start font-serif-wedding text-[16px] font-medium text-[var(--ink)] max-[380px]:w-auto max-[380px]:text-center">
                         {invitee.fullName ?? copy.guestFallbackName}
                       </span>
                       <div className="flex gap-2">
@@ -887,7 +888,7 @@ export default function WeddingInvitation({
                   ))}
                 </div>
                 <button
-                  className="reveal mt-[30px] inline-flex cursor-pointer items-center justify-center whitespace-nowrap rounded-[2px] border border-[var(--gold-line)] bg-white/[0.04] px-[26px] py-[13px] font-serif-wedding text-[13px] tracking-[0.06em] text-[var(--ink)] transition duration-300 hover:border-[var(--ink)] hover:bg-white/[0.14] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="reveal mt-[26px] inline-flex min-h-[46px] cursor-pointer items-center justify-center whitespace-nowrap rounded-[3px] border border-[var(--ink)] bg-[var(--ink)] px-[30px] py-[12px] font-serif-wedding text-[14px] font-semibold tracking-[0.04em] text-[var(--cream)] shadow-[0_4px_14px_rgba(70,84,72,0.22)] transition duration-300 hover:bg-[#38463b] active:scale-95 disabled:cursor-not-allowed disabled:opacity-60"
                   type="button"
                   onClick={submitRsvps}
                   disabled={submittingRsvp}
