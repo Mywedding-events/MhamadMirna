@@ -901,7 +901,7 @@ export default function WeddingInvitation({
                   </p>
                 ) : (
                   <p
-                    className={`text-shadow-wedding mt-5 min-h-6 text-lg italic text-[var(--gold)] transition-opacity duration-500 ${confirmed ? "opacity-100" : "opacity-0"}`}
+                    className={`text-shadow-wedding mt-5 min-h-6 text-lg italic text-[var(--ink)] transition-opacity duration-500 ${confirmed ? "opacity-100" : "opacity-0"}`}
                   >
                     {copy.rsvpThanks}
                   </p>
